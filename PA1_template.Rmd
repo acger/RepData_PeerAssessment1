@@ -38,19 +38,20 @@ head(data)
 ```{r}
 # Group days with tapply and calculate the sum of steps for each day
 sumPerDay <- tapply(data$steps, data$date, sum, na.rm = TRUE)
+
+# Calculate mean and median
+meanPerDay <- mean(sumPerDay)
+medianPerDay <- median(sumPerDay)
 ```
 Histogram of steps taken per day
 ```{r, fig.height=4}
-hist(sumPerDay, breaks = 20, main = "Histogram of the sum of steps per day")
-```
-```{r}
-mean(sumPerDay)
-```
-```{r}
-median(sumPerDay)
+hist(sumPerDay, breaks = 20, main = "Histogram of the total number of steps taken each day", xlab = "Steps per day")
+abline(v = meanPerDay, col = "red")
+abline(v = medianPerDay, col = "blue")
+legend(x = "topright", legend = c("mean", "median"), col = c("red", "blue"), lty = 1)
 ```
 
-The mean of steps per day is `r mean(sumPerDay)` and the median of steps per day is `r median(sumPerDay)`.
+The mean of steps per day is `r meanPerDay` and the median of steps per day is `r medianPerDay`.
 
 ## What is the average daily activity pattern?
 ```{r}
@@ -66,7 +67,7 @@ maximumNoOfSteps <- meanOfStepsPerInterval[which.max(meanOfStepsPerInterval$step
 
 ```{r}
 # Interval with the maximum number of steps
-maximumNoOfSteps$interval
+maximumNoOfSteps
 ```
 
 The maximum number of steps is `r maximumNoOfSteps$steps` and is in interval number `r maximumNoOfSteps$interval`.
@@ -95,7 +96,7 @@ anyNA(data$interval)
 
 As we can see, only the column steps has missing values.
 
-The strategy to imput the missing values is filling them with the mean of the day.
+The strategy to imput the missing values is filling them with the mean of the interval from the other days.
 
 ```{r}
 # copy data frame
@@ -112,7 +113,7 @@ data2$steps <- ifelse(is.na(data2$steps), meanOfStepsPerInterval[data2$interval,
 # Calculate the mean per interval (use aggregate instead of tapply because it returs a data frame)
 aggregatedStepsPerDay <- aggregate(steps ~ date, data2, sum)
 
-hist(aggregatedStepsPerDay$steps, breaks = 20, main = "Histogram of the sum of steps per day")
+hist(aggregatedStepsPerDay$steps, breaks = 20, main = "Histogram of the sum of steps per day with imputed values", xlab = "Steps per day")
 
 # Draw lines for mean and median
 meanStepsPerDay <- mean(aggregatedStepsPerDay$steps)
@@ -138,5 +139,6 @@ library(lattice)
 xyplot(steps ~ interval | weekday, meanOfStepsPerIntervalWeekday, layout = c(1, 2), type = "l")
 ```
 
+In the plots we can see that the person tends to get up earlier on weekdays and is more active during the day on weekends.
 
 

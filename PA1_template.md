@@ -39,30 +39,21 @@ head(data)
 ```r
 # Group days with tapply and calculate the sum of steps for each day
 sumPerDay <- tapply(data$steps, data$date, sum, na.rm = TRUE)
+
+# Calculate mean and median
+meanPerDay <- mean(sumPerDay)
+medianPerDay <- median(sumPerDay)
 ```
 Histogram of steps taken per day
 
 ```r
-hist(sumPerDay, breaks = 20, main = "Histogram of the sum of steps per day")
+hist(sumPerDay, breaks = 20, main = "Histogram of the total number of steps taken each day", xlab = "Steps per day")
+abline(v = meanPerDay, col = "red")
+abline(v = medianPerDay, col = "blue")
+legend(x = "topright", legend = c("mean", "median"), col = c("red", "blue"), lty = 1)
 ```
 
 ![](PA1_template_files/figure-html/unnamed-chunk-4-1.png) 
-
-```r
-mean(sumPerDay)
-```
-
-```
-## [1] 9354
-```
-
-```r
-median(sumPerDay)
-```
-
-```
-## [1] 10395
-```
 
 The mean of steps per day is 9354.23 and the median of steps per day is 10395.
 
@@ -76,7 +67,7 @@ meanOfStepsPerInterval <- aggregate(steps ~ interval, data, mean)
 plot(meanOfStepsPerInterval, type = "l", main = "Average number of steps per 5 minute interval", xlab = "5-minute interval", ylab = "Average number of steps taken")
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-7-1.png) 
+![](PA1_template_files/figure-html/unnamed-chunk-5-1.png) 
 
 ```r
 # Find the maximum average number of steps
@@ -86,11 +77,12 @@ maximumNoOfSteps <- meanOfStepsPerInterval[which.max(meanOfStepsPerInterval$step
 
 ```r
 # Interval with the maximum number of steps
-maximumNoOfSteps$interval
+maximumNoOfSteps
 ```
 
 ```
-## [1] 835
+##     interval steps
+## 104      835   206
 ```
 
 The maximum number of steps is 206.17 and is in interval number 835.
@@ -139,7 +131,7 @@ anyNA(data$interval)
 
 As we can see, only the column steps has missing values.
 
-The strategy to imput the missing values is filling them with the mean of the day.
+The strategy to imput the missing values is filling them with the mean of the interval from the other days.
 
 
 ```r
@@ -158,7 +150,7 @@ data2$steps <- ifelse(is.na(data2$steps), meanOfStepsPerInterval[data2$interval,
 # Calculate the mean per interval (use aggregate instead of tapply because it returs a data frame)
 aggregatedStepsPerDay <- aggregate(steps ~ date, data2, sum)
 
-hist(aggregatedStepsPerDay$steps, breaks = 20, main = "Histogram of the sum of steps per day")
+hist(aggregatedStepsPerDay$steps, breaks = 20, main = "Histogram of the sum of steps per day with imputed values", xlab = "Steps per day")
 
 # Draw lines for mean and median
 meanStepsPerDay <- mean(aggregatedStepsPerDay$steps)
@@ -168,7 +160,7 @@ abline(v = medianStepsPerDay, col = "blue")
 legend(x = "topright", legend = c("mean", "median"), col = c("red", "blue"), lty = 1)
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-14-1.png) 
+![](PA1_template_files/figure-html/unnamed-chunk-12-1.png) 
 
 The mean is 9545.51 and the median is 10395.
 
@@ -187,7 +179,8 @@ library(lattice)
 xyplot(steps ~ interval | weekday, meanOfStepsPerIntervalWeekday, layout = c(1, 2), type = "l")
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-15-1.png) 
+![](PA1_template_files/figure-html/unnamed-chunk-13-1.png) 
 
+In the plots we can see that the person tends to get up earlier on weekdays and is more active during the day on weekends.
 
 
