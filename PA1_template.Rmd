@@ -4,7 +4,7 @@ output:
   html_document:
     keep_md: true
 ---
-```{r setoptions, echo=FALSE}
+```{r setoptions, echo=FALSE, results="hide"}
 # Set time conversion to english
 Sys.setlocale("LC_TIME", "English")
 

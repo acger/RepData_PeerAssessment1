@@ -1,8 +1,5 @@
 # Reproducible Research: Peer Assessment 1
 
-```
-## [1] "English_United States.1252"
-```
 
 
 ## Loading and preprocessing the data
