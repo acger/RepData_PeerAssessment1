@@ -1,17 +1,12 @@
 # Reproducible Research: Peer Assessment 1
 
-
-## Loading and preprocessing the data
-Unzip and load the data
-
-```r
-# Set time conversion to english
-Sys.setlocale("LC_TIME", "English")
-```
-
 ```
 ## [1] "English_United States.1252"
 ```
+
+
+## Loading and preprocessing the data
+Unzip and load the data
 
 ```r
 # Unzip the archive
@@ -61,7 +56,7 @@ mean(sumPerDay)
 ```
 
 ```
-## [1] 9354.23
+## [1] 9354
 ```
 
 ```r
@@ -72,7 +67,7 @@ median(sumPerDay)
 ## [1] 10395
 ```
 
-The mean of steps per day is 9354.2295082 and the median of steps per day is 1.0395\times 10^{4}.
+The mean of steps per day is 9354.23 and the median of steps per day is 10395.
 
 ## What is the average daily activity pattern?
 
@@ -101,7 +96,7 @@ maximumNoOfSteps$interval
 ## [1] 835
 ```
 
-The maximum number of steps is 206.1698113 and is in interval number 835.
+The maximum number of steps is 206.17 and is in interval number 835.
 
 
 ## Imputing missing values
@@ -178,7 +173,7 @@ legend(x = "topright", legend = c("mean", "median"), col = c("red", "blue"), lty
 
 ![](PA1_template_files/figure-html/unnamed-chunk-14-1.png) 
 
-The mean is 9545.5143829 and the median is 1.0395\times 10^{4}.
+The mean is 9545.51 and the median is 10395.
 
 
 ## Are there differences in activity patterns between weekdays and weekends?
@@ -192,8 +187,7 @@ meanOfStepsPerIntervalWeekday <- aggregate(steps ~ interval + weekday, data2, me
 
 library(lattice)
 
-par(mfrow = c(2, 1))
-xyplot(steps ~ interval | weekday, data2, layout = c(1, 2))
+xyplot(steps ~ interval | weekday, meanOfStepsPerIntervalWeekday, layout = c(1, 2), type = "l")
 ```
 
 ![](PA1_template_files/figure-html/unnamed-chunk-15-1.png) 

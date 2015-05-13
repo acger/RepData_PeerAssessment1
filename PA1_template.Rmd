@@ -4,14 +4,19 @@ output:
   html_document:
     keep_md: true
 ---
+```{r setoptions, echo=FALSE}
+# Set time conversion to english
+Sys.setlocale("LC_TIME", "English")
+
+# Set number format
+library(knitr)
+options(scipen = 1, digits = 2)
+```
 
 
 ## Loading and preprocessing the data
 Unzip and load the data
 ```{r}
-# Set time conversion to english
-Sys.setlocale("LC_TIME", "English")
-
 # Unzip the archive
 unzip("activity.zip")
 
@@ -130,8 +135,7 @@ meanOfStepsPerIntervalWeekday <- aggregate(steps ~ interval + weekday, data2, me
 
 library(lattice)
 
-par(mfrow = c(2, 1))
-xyplot(steps ~ interval | weekday, data2, layout = c(1, 2))
+xyplot(steps ~ interval | weekday, meanOfStepsPerIntervalWeekday, layout = c(1, 2), type = "l")
 ```
 
 
